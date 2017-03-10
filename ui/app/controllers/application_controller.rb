@@ -11,16 +11,23 @@ class ApplicationController < ActionController::Base
 
   # TODO: hook this up with your own authentication system
   def current_user
-    @current_user = {
-      :username => "admin",
-      :capabilities => ["admin"],
-    }
+    @_current_user = User.new.get(session[:current_user_id], session[:current_user_email])
   end
+  helper_method :current_user
 
   def current_user_name
-    @current_user[:username]
+    return current_user[:username]
   end
   helper_method :current_user_name
+
+  def user_logged_in?
+    return current_user_name != "guest"
+  end
+  helper_method :user_logged_in?
+
+  def require_login
+    redirect_to login_path unless user_logged_in?
+  end
 
   def record_not_found
     render :text => "404 Not Found", :status => 404

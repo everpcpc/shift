@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+  before_action :require_login
   def create
     @comment = Comment.new(:author => params["author"], :comment => params["comment"], :migration_id => params["migration_id"])
     @comment.save

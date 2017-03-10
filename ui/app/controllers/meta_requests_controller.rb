@@ -1,4 +1,5 @@
 class MetaRequestsController < ApplicationController
+  before_action :require_login
   def index
     @meta_requests = MetaRequest.all().order("created_at DESC").page(params[:page])
     @count = MetaRequest.count

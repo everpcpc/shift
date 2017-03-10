@@ -1,4 +1,5 @@
 class MigrationsController < ApplicationController
+  before_action :require_login
   def index
     @migrations = {}
     state = params[:state]

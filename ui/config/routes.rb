@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   post '/parser', to: 'parser#parse'
   get '/status_image/:id', to: 'migrations#status_image'
 
+  resource :login, :only => [:show, :create, :destroy]
+
   resources :meta_requests, :only => [:show, :index, :new, :create, :update]
   resources :meta_requests do
     member do
@@ -75,7 +77,7 @@ Rails.application.routes.draw do
       resources :migrations, :only => [:show, :update, :create, :destroy]
     end
   end
-
+  
   match "/404" => "errors#error404", via: [ :get, :post, :patch, :delete ]
   match "/401" => "errors#error401", via: [ :get, :post, :patch, :delete ]
 end

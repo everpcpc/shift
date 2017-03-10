@@ -1,0 +1,6 @@
+production:
+  host: <%= ENV['LDAP_HOST'] %>
+  port: <%= ENV['LDAP_PORT'] || 389 %>
+  default_domain: <%= ENV['LDAP_DOMAIN'] %>
+  base: <%= ENV['LDAP_BASE'] %>
+  admins: <%= ENV['LDAP_ADMINS'] %>

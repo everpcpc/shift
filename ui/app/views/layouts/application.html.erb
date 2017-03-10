@@ -23,14 +23,21 @@
               <%= link_to 'shift', root_url, class: 'navbar-brand' %>
             </div>
             <div class="collapse navbar-collapse">
-              <p class="navbar-text navbar-right">
-              <%= current_user_name %></p>
+              <form action="<%= login_path %>" method="POST" class="navbar-text navbar-right" id="logout_form" hidden>
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                <input type="hidden" name="_method" value="delete">
+              </form>
               <ul class="nav navbar-nav navbar-right">
                 <li class="<%= 'active' if params[:action] == "index" && params[:controller] == "migrations" %>"><%= link_to 'All Requests', root_url %></li>
                 <li class="<%= 'active' if params[:action] == "index" && params[:controller] == "meta_requests" %>"><%= link_to 'Meta Requests', meta_requests_path %></li>
                 <li class="<%= 'active' if params[:action] == "new" %>"><%= link_to 'Create Request', new_migration_path %></li>
                 <% if user_is_admin? %>
-                <li class="<%= 'active' if params[:action] == "index" && params[:controller] == "admin" %>"><%= link_to 'Admin Panel', admin_index_path %></li>
+                  <li class="<%= 'active' if params[:action] == "index" && params[:controller] == "admin" %>"><%= link_to 'Admin Panel', admin_index_path %></li>
+                <% end %>
+                <% if user_logged_in? %>
+                  <li><a href="javascript:;" onclick="$('#logout_form').submit();"><%= current_user_name %></a></li>
+                <% else %>
+                  <li><a href="<%= login_path %>">login</a></li>
                 <% end %>
               </ul>
             </div>
@@ -45,8 +52,10 @@
             <strong>Warning:</strong> <%= Rails.env.capitalize %> environment.
           </div>
         <% end %>
-
-          <%= yield %>
+        <% flash.each do |key, value| %>
+          <div class="alert alert-<%= key %>"><%= value %></div>
+        <% end %>
+        <%= yield %>
         </div>
       </div>
     </div>
