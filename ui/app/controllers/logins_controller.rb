@@ -17,14 +17,14 @@ class LoginsController < ApplicationController
     else
       flash[:danger] = "Log in failed."
     end
-    redirect_to login_path
+    redirect_to root_url
   end
 
   def destroy
     session[:current_user_id] = nil
     session[:current_user_email] = nil
     flash[:success] = "You have successfully logged out."
-    redirect_to root_url
+    redirect_to login_path
   end
 
 end
