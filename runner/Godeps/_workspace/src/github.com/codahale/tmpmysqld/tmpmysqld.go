@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"time"
 
-	_ "github.com/square/shift/runner/Godeps/_workspace/src/github.com/go-sql-driver/mysql" // load MySQL driver
+	_ "github.com/everpcpc/shift/runner/Godeps/_workspace/src/github.com/go-sql-driver/mysql" // load MySQL driver
 	"io/ioutil"
 	"os"
 	"syscall"

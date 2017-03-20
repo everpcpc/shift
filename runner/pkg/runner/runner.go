@@ -18,11 +18,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/square/shift/runner/pkg/migration"
-	"github.com/square/shift/runner/pkg/rest"
+	"github.com/everpcpc/shift/runner/pkg/migration"
+	"github.com/everpcpc/shift/runner/pkg/rest"
 
-	"github.com/square/shift/runner/Godeps/_workspace/src/github.com/golang/glog"
-	"github.com/square/shift/runner/Godeps/_workspace/src/gopkg.in/yaml.v2"
+	"github.com/everpcpc/shift/runner/Godeps/_workspace/src/github.com/golang/glog"
+	"github.com/everpcpc/shift/runner/Godeps/_workspace/src/gopkg.in/yaml.v2"
 )
 
 const (

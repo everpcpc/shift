@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/square/shift/runner/pkg/testutils"
+	"github.com/everpcpc/shift/runner/pkg/testutils"
 )
 
 var testMigId = "3"

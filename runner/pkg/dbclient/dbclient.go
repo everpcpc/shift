@@ -16,9 +16,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/square/shift/runner/Godeps/_workspace/src/code.google.com/p/goconf/conf"
-	"github.com/square/shift/runner/Godeps/_workspace/src/github.com/go-sql-driver/mysql"
-	"github.com/square/shift/runner/Godeps/_workspace/src/github.com/golang/glog"
+	"github.com/everpcpc/shift/runner/Godeps/_workspace/src/code.google.com/p/goconf/conf"
+	"github.com/everpcpc/shift/runner/Godeps/_workspace/src/github.com/go-sql-driver/mysql"
+	"github.com/everpcpc/shift/runner/Godeps/_workspace/src/github.com/golang/glog"
 )
 
 type mysqlDB struct {
