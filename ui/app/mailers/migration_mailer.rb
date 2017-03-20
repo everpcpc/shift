@@ -15,6 +15,7 @@ class MigrationMailer < ActionMailer::Base
       # email the requestor and approver
       recipients = [@migration.requestor + @@mailer_config[:default_to_domain]]
       recipients << @migration.approved_by + @@mailer_config[:default_to_domain] if @migration.approved_by
+      recipients << @@mailer_config[:default_to] + @@mailer_config[:default_to_domain]
     else
       recipients = [@@mailer_config[:default_to] + @@mailer_config[:default_to_domain]]
     end
