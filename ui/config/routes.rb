@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :comments, :only => [:create, :destroy]
+  # resources :comments, :only => [:create, :destroy]
 
   resources :admin, :only => [:index]
   resources :admin do
@@ -77,7 +77,7 @@ Rails.application.routes.draw do
       resources :migrations, :only => [:show, :update, :create, :destroy]
     end
   end
-  
+
   match "/404" => "errors#error404", via: [ :get, :post, :patch, :delete ]
   match "/401" => "errors#error401", via: [ :get, :post, :patch, :delete ]
 end
