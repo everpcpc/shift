@@ -122,8 +122,13 @@ class MigrationsController < ApplicationController
   def update
     @migration = Form::EditMigrationRequest.new(
       Migration.find(params[:id]),
-      params.require(:form_edit_migration_request).merge(requestor: current_user_name)
+      params.require(:form_edit_migration_request)
     )
+
+    if current_user_name != @migration.requestor && !user_is_admin?
+      flash[:danger] = "You are not allowed to edit this."
+      return redirect_to migration_path(@migration)
+    end
 
     # lock_version is not so important here...if the migration is editable, it will get
     # updated. even if the lock_version were to change but the mig was still in an
@@ -131,11 +136,14 @@ class MigrationsController < ApplicationController
     if @migration.editable? && (params[:form_edit_migration_request][:lock_version].to_i == @migration.dao.lock_version) &&
         !@migration.meta_request_id
       if @migration.save
+        flash[:success] = "Migration edit success."
         redirect_to migration_path(@migration)
       else
+        flash[:warning] = "Save failed."
         render action: 'edit'
       end
     else
+      flash[:danger] = "Migration not editable."
       redirect_to migration_path(@migration)
     end
   end
