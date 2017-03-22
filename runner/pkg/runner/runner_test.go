@@ -728,7 +728,7 @@ var prepMigrationStepTests = []struct {
 }{
 	// fail validating final insert
 	{0, 0, validDdl1, migration.LONG_RUN, migration.TABLE_MODE, migration.ALTER_ACTION,
-		nil, migration.ErrInvalidInsert, nil, nil, nil, migration.ErrInvalidInsert, nil},
+		nil, migration.ErrInvalidInsert{}, nil, nil, nil, migration.ErrInvalidInsert{}, nil},
 	// fail running pt-osc dry run
 	{0, 0, validDdl1, migration.LONG_RUN, migration.TABLE_MODE, migration.ALTER_ACTION,
 		nil, nil, migration.ErrPtOscUnexpectedStderr, nil, nil, migration.ErrPtOscUnexpectedStderr, nil},
@@ -737,7 +737,7 @@ var prepMigrationStepTests = []struct {
 		nil, nil, nil, nil, migration.ErrDryRunCreatesNew, migration.ErrDryRunCreatesNew, nil},
 	// fail collecting table status
 	{0, 0, validDirectDdl2, migration.SHORT_RUN, migration.TABLE_MODE, migration.DROP_ACTION,
-		&validTableStats, nil, nil, migration.ErrQueryFailed, nil, migration.ErrQueryFailed, nil},
+		&validTableStats, nil, nil, migration.ErrQueryFailed{}, nil, migration.ErrQueryFailed{}, nil},
 	// fail updating the migration
 	{2, 0, validDdl1, migration.LONG_RUN, migration.TABLE_MODE, migration.ALTER_ACTION,
 		&validTableStats, nil, nil, nil, nil, ErrUpdate, validTableStatsPayload("7", "start")},
@@ -806,7 +806,7 @@ var runMigrationStepTests = []struct {
 	{
 		validDirectDdl1, migration.SHORT_RUN,
 		migration.TABLE_MODE, migration.CREATE_ACTION,
-		migration.ErrQueryFailed, nil, nil, migration.ErrQueryFailed,
+		migration.ErrQueryFailed{}, nil, nil, migration.ErrQueryFailed{},
 	},
 	// fail to drop direct
 	{
@@ -873,9 +873,9 @@ var runMigrationDirectCreateTests = []struct {
 	expectedPayload  map[string]string
 }{
 	// fail running migration query directly against the db
-	{0, migration.ErrQueryFailed, nil, migration.ErrQueryFailed, nil},
+	{0, migration.ErrQueryFailed{}, nil, migration.ErrQueryFailed{}, nil},
 	// fail running the final insert
-	{0, nil, migration.ErrQueryFailed, migration.ErrQueryFailed, nil},
+	{0, nil, migration.ErrQueryFailed{}, migration.ErrQueryFailed{}, nil},
 	// fail completing the migration
 	{2, nil, nil, ErrComplete, map[string]string{"id": "7"}},
 	// succeed
@@ -929,13 +929,13 @@ var runMigrationDirectDropTests = []struct {
 	expectedPayload    map[string]string
 }{
 	// fail to drop the triggers
-	{0, validDirectDdl2, migration.SHORT_RUN, migration.TABLE_MODE, migration.DROP_ACTION, migration.ErrQueryFailed, nil, nil, nil, migration.ErrQueryFailed, nil},
+	{0, validDirectDdl2, migration.SHORT_RUN, migration.TABLE_MODE, migration.DROP_ACTION, migration.ErrQueryFailed{}, nil, nil, nil, migration.ErrQueryFailed{}, nil},
 	// fail to directly drop a view alter ddl
 	{0, validDirectDdl3, migration.SHORT_RUN, migration.VIEW_MODE, migration.DROP_ACTION, nil, migration.ErrDirectDrop, nil, nil, migration.ErrDirectDrop, nil},
 	// fail to directly drop a view normal alter
-	{0, validDirectDdl2, migration.SHORT_RUN, migration.TABLE_MODE, migration.DROP_ACTION, nil, nil, migration.ErrQueryFailed, nil, migration.ErrQueryFailed, nil},
+	{0, validDirectDdl2, migration.SHORT_RUN, migration.TABLE_MODE, migration.DROP_ACTION, nil, nil, migration.ErrQueryFailed{}, nil, migration.ErrQueryFailed{}, nil},
 	// fail running the final insert
-	{0, validDirectDdl2, migration.SHORT_RUN, migration.TABLE_MODE, migration.DROP_ACTION, nil, nil, nil, migration.ErrQueryFailed, migration.ErrQueryFailed, nil},
+	{0, validDirectDdl2, migration.SHORT_RUN, migration.TABLE_MODE, migration.DROP_ACTION, nil, nil, nil, migration.ErrQueryFailed{}, migration.ErrQueryFailed{}, nil},
 	// fail completing the migration
 	{2, validDirectDdl2, migration.SHORT_RUN, migration.TABLE_MODE, migration.DROP_ACTION, nil, nil, nil, nil, ErrComplete, map[string]string{"id": "7"}},
 	// succeed
@@ -1049,17 +1049,17 @@ var renameTablesStepTests = []struct {
 	expectedPayload    map[string]string
 }{
 	// fail running swap tables
-	{0, 0, &validTableStats, migration.ErrQueryFailed, nil, nil, nil, nil, migration.ErrQueryFailed, nil},
+	{0, 0, &validTableStats, migration.ErrQueryFailed{}, nil, nil, nil, nil, migration.ErrQueryFailed{}, nil},
 	// fail dropping the triggers
-	{0, 0, &validTableStats, nil, nil, nil, migration.ErrQueryFailed, nil, migration.ErrQueryFailed, nil},
+	{0, 0, &validTableStats, nil, nil, nil, migration.ErrQueryFailed{}, nil, migration.ErrQueryFailed{}, nil},
 	// fail moving to pending drops
-	{0, 0, &validTableStats, nil, nil, nil, nil, migration.ErrQueryFailed, migration.ErrQueryFailed, nil},
+	{0, 0, &validTableStats, nil, nil, nil, nil, migration.ErrQueryFailed{}, migration.ErrQueryFailed{}, nil},
 	// fail getting table stats
-	{0, 0, &validTableStats, nil, migration.ErrQueryFailed, nil, nil, nil, migration.ErrQueryFailed, nil},
+	{0, 0, &validTableStats, nil, migration.ErrQueryFailed{}, nil, nil, nil, migration.ErrQueryFailed{}, nil},
 	// fail updating the migration
 	{2, 0, &validTableStats, nil, nil, nil, nil, nil, ErrUpdate, validTableStatsPayload("7", "end")},
 	// fail running the final insert
-	{0, 0, &validTableStats, nil, nil, migration.ErrQueryFailed, nil, nil, migration.ErrQueryFailed, validTableStatsPayload("7", "end")},
+	{0, 0, &validTableStats, nil, nil, migration.ErrQueryFailed{}, nil, nil, migration.ErrQueryFailed{}, validTableStatsPayload("7", "end")},
 	// fail to complete the migration
 	{0, 2, &validTableStats, nil, nil, nil, nil, nil, ErrComplete, map[string]string{"id": "7"}},
 	// successfully complete the migration
@@ -1307,49 +1307,49 @@ var generatePtOscCommandTests = []struct {
 }{
 	// options for the prepMigration step
 	{"defaults-file.cnf", "/log/path/", false, &migration.Migration{Id: 7, DdlStatement: "alter table t1    drop column c",
-		Database: "db", Table: "t", Status: 0, Host: "rw.hostname", RunType: migration.NOCHECKALTER_RUN,
+		Database: "db", Table: "t", Status: 0, Host: "rw.hostname", Port: 1234, RunType: migration.NOCHECKALTER_RUN,
 		CustomOptions: map[string]string{}},
-		[]string{"--alter", "drop column c", "--dry-run", "-h", "rw.hostname", "--defaults-file",
+		[]string{"--alter", "drop column c", "--dry-run", "-h", "rw.hostname", "-P", "1234", "--defaults-file",
 			"defaults-file.cnf", "D=db,t=t"}},
 	// options for the runMigration step statefile doesn't exist
 	{"defaults-file.cnf", "/log/path/", false, &migration.Migration{Id: 7, DdlStatement: "alter table    t1 drop column c",
-		Database: "db", Table: "t", Status: 3, Host: "rw.hostname", StateFile: stateFile, RunType: migration.LONG_RUN,
+		Database: "db", Table: "t", Status: 3, Host: "rw.hostname", Port: 1234, StateFile: stateFile, RunType: migration.LONG_RUN,
 		CustomOptions: map[string]string{}},
 		[]string{"--max-load", "Threads_running=125", "--critical-load", "Threads_running=200", "--tries",
 			"create_triggers:200:1,copy_rows:10000:1", "--max-lag", "1", "--set-vars", "wait_timeout=600,lock_wait_timeout=1",
-			"--alter", "drop column c", "--execute", "-h", "rw.hostname", "--defaults-file", "defaults-file.cnf",
+			"--alter", "drop column c", "--execute", "-h", "rw.hostname", "-P", "1234", "--defaults-file", "defaults-file.cnf",
 			"--progress", ptOscProgress, "--exit-at", "copy", "--save-state", stateFile, "D=db,t=t"}},
 	// options for the runMigration step statefile does exist
 	{"defaults-file.cnf", "/log/path/", true, &migration.Migration{Id: 7, DdlStatement: "alter table    t1 drop column c",
-		Database: "db", Table: "t", Status: 3, Host: "rw.hostname", StateFile: stateFile, RunType: migration.LONG_RUN,
+		Database: "db", Table: "t", Status: 3, Host: "rw.hostname", Port: 1234, StateFile: stateFile, RunType: migration.LONG_RUN,
 		CustomOptions: map[string]string{}},
 		[]string{"--max-load", "Threads_running=125", "--critical-load", "Threads_running=200", "--tries",
 			"create_triggers:200:1,copy_rows:10000:1", "--max-lag", "1", "--set-vars", "wait_timeout=600,lock_wait_timeout=1",
-			"--alter", "drop column c", "--execute", "-h", "rw.hostname", "--defaults-file", "defaults-file.cnf",
+			"--alter", "drop column c", "--execute", "-h", "rw.hostname", "-P", "1234", "--defaults-file", "defaults-file.cnf",
 			"--progress", ptOscProgress, "--exit-at", "copy", "--save-state", "tmpstate.txt", "--load-state", "tmpstate.txt",
 			"D=db,t=t"}},
 	// options for the runMigration step statefile doesn't exist and runtype is "nocheck-alter"
 	{"defaults-file.cnf", "/log/path/", false, &migration.Migration{Id: 7, DdlStatement: "alter table    t1 drop column c",
-		Database: "db", Table: "t", Status: 3, Host: "rw.hostname", StateFile: stateFile, RunType: migration.NOCHECKALTER_RUN,
+		Database: "db", Table: "t", Status: 3, Host: "rw.hostname", Port: 1234, StateFile: stateFile, RunType: migration.NOCHECKALTER_RUN,
 		CustomOptions: map[string]string{}},
 		[]string{"--max-load", "Threads_running=125", "--critical-load", "Threads_running=200", "--tries",
 			"create_triggers:200:1,copy_rows:10000:1", "--max-lag", "1", "--set-vars", "wait_timeout=600,lock_wait_timeout=1",
-			"--alter", "drop column c", "--execute", "-h", "rw.hostname", "--defaults-file", "defaults-file.cnf",
+			"--alter", "drop column c", "--execute", "-h", "rw.hostname", "-P", "1234", "--defaults-file", "defaults-file.cnf",
 			"--progress", ptOscProgress, "--exit-at", "copy", "--save-state", stateFile, "--nocheck-alter", "D=db,t=t"}},
 	// options that specify custom pt-osc flags
 	{"defaults-file.cnf", "/log/path/", false, &migration.Migration{Id: 7, DdlStatement: "alter table    t1 drop column c",
-		Database: "db", Table: "t", Status: 3, Host: "rw.hostname", StateFile: stateFile, RunType: migration.LONG_RUN,
+		Database: "db", Table: "t", Status: 3, Host: "rw.hostname", Port: 1234, StateFile: stateFile, RunType: migration.LONG_RUN,
 		CustomOptions: map[string]string{"max_threads_running": "321", "max_replication_lag": "4"}},
 		[]string{"--max-load", "Threads_running=125", "--critical-load", "Threads_running=321", "--tries",
 			"create_triggers:200:1,copy_rows:10000:1", "--max-lag", "4", "--set-vars", "wait_timeout=600,lock_wait_timeout=1",
-			"--alter", "drop column c", "--execute", "-h", "rw.hostname", "--defaults-file", "defaults-file.cnf",
+			"--alter", "drop column c", "--execute", "-h", "rw.hostname", "-P", "1234", "--defaults-file", "defaults-file.cnf",
 			"--progress", ptOscProgress, "--exit-at", "copy", "--save-state", stateFile, "D=db,t=t"}},
 	// options that specify optional custom pt-osc flags
 	{"defaults-file.cnf", "/log/path/", false, &migration.Migration{Id: 7, DdlStatement: "alter table    t1 drop column c",
-		Database: "db", Table: "t", Status: 3, Host: "rw.hostname", StateFile: stateFile, RunType: migration.LONG_RUN,
+		Database: "db", Table: "t", Status: 3, Host: "rw.hostname", Port: 1234, StateFile: stateFile, RunType: migration.LONG_RUN,
 		CustomOptions: map[string]string{"max_threads_running": "321", "max_replication_lag": "4",
 			"config_path": "/path/to/file", "recursion_method": "hosts"}},
-		[]string{"--config", "/path/to/file", "--alter", "drop column c", "--execute", "-h", "rw.hostname", "--defaults-file",
+		[]string{"--config", "/path/to/file", "--alter", "drop column c", "--execute", "-h", "rw.hostname", "-P", "1234", "--defaults-file",
 			"defaults-file.cnf", "--progress", ptOscProgress, "--exit-at", "copy", "--save-state", stateFile,
 			"--recursion-method", "hosts", "D=db,t=t"}},
 	// options for an unexpected step
