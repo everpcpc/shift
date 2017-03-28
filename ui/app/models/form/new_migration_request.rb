@@ -6,6 +6,7 @@ module Form
       # define some defaults
       self.max_threads_running = 200
       self.max_replication_lag = 1
+      self.config_path = '/etc/pt-osc.cnf'
 
       ATTRIBUTES.each do |attr|
         if params.has_key?(attr.to_s)
