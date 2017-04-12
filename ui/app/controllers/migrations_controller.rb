@@ -371,6 +371,12 @@ class MigrationsController < ApplicationController
   end
   helper_method :use_ptosc?
 
+  def show_schema?
+    policy(@migration).destroy?
+  end
+  helper_method :show_schema?
+
+
   def migration_in_progress?
     Migration.status_groups[:pending].include?(@migration.status) || Migration.status_groups[:running].include?(@migration.status)
   end

@@ -117,6 +117,15 @@ class Migration < ActiveRecord::Base
     init_parse; @parsed
   end
 
+  def current_schema
+    begin
+      mysql = MysqlHelper.new self.cluster_name
+    rescue => e
+      manage_error(e, include_error); return
+    end
+    mysql.schema self.database, @parsed[:table]
+  end
+
   def self.types
     TYPES
   end

@@ -51,6 +51,13 @@ class MysqlHelper
     row['count'] != 0
   end
 
+  def schema(database, table)
+    database = normalize_database(database)
+    table = normalize_table(table)
+    row = @client.query("show create table #{database}.#{table}").first
+    row['Create Table']
+  end
+
   def databases
     results = @client.query("SHOW DATABASES").map { |row| row['Database'] }
     results - Rails.application.config.x.mysql_helper.db_blacklist

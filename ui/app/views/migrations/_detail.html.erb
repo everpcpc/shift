@@ -101,6 +101,11 @@
   </div>
 <% end %>
 
+  <div class="row detail_data">
+    <div class="col-md-2 col-md-offset-3"><strong>current schema</strong></div>
+    <div class="col-md-6"><pre><%= @migration.current_schema %></pre></div>
+  </div>
+
 <% if migration_in_progress? %>
 <div id="action-sction"></div>
 <h2>Actions</h2>
