@@ -66,6 +66,7 @@ class Migration < ActiveRecord::Base
   SMALL_TABLE_ROW_LIMIT = 5000
 
   def manage_error(err, include_error)
+    Rails.logger.error err
     @parsed = {
       stm: '',
       run: :undecided,
@@ -107,6 +108,25 @@ class Migration < ActiveRecord::Base
 
     begin
       @parsed = parser.parse self.ddl_statement
+    rescue ShiftError => e
+      checkers = {
+        table_exists: nil,
+        get_columns: nil,
+        has_referenced_foreign_keys: nil,
+        get_foreign_keys: nil,
+        avoid_temporal_upgrade?: nil
+      }
+      parser.merge_checkers! checkers
+      @unsafe_parsed = parser.parse self.ddl_statement
+      @parsed = {
+        stm: '',
+        run: :undecided,
+        table: @unsafe_parsed[:table],
+        lock_version: self.lock_version,
+        error: true,
+      }
+      self.error_message ||= e.message
+      return
     rescue => e
       manage_error(e, include_error); return
     end

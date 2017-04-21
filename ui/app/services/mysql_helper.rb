@@ -54,8 +54,13 @@ class MysqlHelper
   def schema(database, table)
     database = normalize_database(database)
     table = normalize_table(table)
-    row = @client.query("show create table #{database}.#{table}").first
-    row['Create Table']
+    begin
+      row = @client.query("show create table #{database}.#{table}").first
+      row['Create Table']
+    rescue => e
+      Rails.logger.error e
+      "#{database}.#{table} dose not exists"
+    end
   end
 
   def databases
