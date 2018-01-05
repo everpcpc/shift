@@ -300,7 +300,7 @@ func (migration *Migration) MoveToPendingDrops(sourceTable, destTable string) er
 func timestampedTable(table string) string {
 	t := time.Now()
 	timestamp := fmt.Sprintf("%d%02d%02d%02d%02d%02d%03d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second(), t.Nanosecond()/1000000)
-	timestampedTable := timestamp + "_" + table
+	timestampedTable := "_" + timestamp + "_" + table
 	// clip the table name if it's too long
 	if len(timestampedTable) > maxTableLength {
 		timestampedTable = timestampedTable[0:maxTableLength]
