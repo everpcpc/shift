@@ -17,7 +17,7 @@ package dbclient
 import (
 	"testing"
 
-	"github.com/everpcpc/shift/runner/Godeps/_workspace/src/github.com/codahale/tmpmysqld"
+	"github.com/square/shift/runner/Godeps/_workspace/src/github.com/codahale/tmpmysqld"
 )
 
 var (

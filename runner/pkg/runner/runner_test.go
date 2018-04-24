@@ -13,9 +13,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/everpcpc/shift/runner/pkg/migration"
-	"github.com/everpcpc/shift/runner/pkg/rest"
-	"github.com/everpcpc/shift/runner/pkg/testutils"
+	"github.com/square/shift/runner/pkg/migration"
+	"github.com/square/shift/runner/pkg/rest"
+	"github.com/square/shift/runner/pkg/testutils"
 )
 
 const (

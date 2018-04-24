@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/everpcpc/shift/runner",
+	"ImportPath": "github.com/square/shift/runner",
 	"GoVersion": "go1.6",
 	"Packages": [
 		"./..."

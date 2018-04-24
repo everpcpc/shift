@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/everpcpc/shift/runner/pkg/dbclient"
-	"github.com/everpcpc/shift/runner/pkg/testutils"
+	"github.com/square/shift/runner/pkg/dbclient"
+	"github.com/square/shift/runner/pkg/testutils"
 )
 
 const (

@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/everpcpc/shift/runner/pkg/dbclient"
+	"github.com/square/shift/runner/pkg/dbclient"
 
-	"github.com/everpcpc/shift/runner/Godeps/_workspace/src/github.com/golang/glog"
-	"github.com/everpcpc/shift/runner/Godeps/_workspace/src/gopkg.in/yaml.v2"
+	"github.com/square/shift/runner/Godeps/_workspace/src/github.com/golang/glog"
+	"github.com/square/shift/runner/Godeps/_workspace/src/gopkg.in/yaml.v2"
 )
 
 const (

@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/everpcpc/shift/runner/pkg/runner"
+	"github.com/square/shift/runner/pkg/runner"
 )
 
 func main() {
