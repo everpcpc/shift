@@ -41,7 +41,7 @@ class ShiftClientCLI
       create_migration.option "--cluster CLUSTER", String, "The cluster to run a migration on"
       create_migration.option "--database DATABASE", String, "The database to run a migration on"
       create_migration.option "--ddl-statement DDL STATEMENT", String, "The ddl statement to run"
-      create_migration.option "--pr-url PR URL", String, "The pull request URL associated with the migration"
+      create_migration.option "--cc CC", String, "Notify someone else"
       create_migration.option "--requestor REQUESTOR", String, "Username of the person creating the migration"
       create_migration.option "--final-insert FINAL INSERT", String, "A final insert statement (optional)"
       # optional pt-osc params. TODO: make this better
@@ -54,11 +54,12 @@ class ShiftClientCLI
         raise "Must provide --database" unless options.database
         raise "Must provide --ddl-statement" unless options.ddl_statement
         raise "Must provide --pr-url" unless options.pr_url
+        raise "Must provide --cc" unless options.cc
         raise "Must provide --requestor" unless options.requestor
 
         client = shift_client_with_auth(options)
         display client.create_migration(options.cluster, options.database, options.ddl_statement,
-                                        options.pr_url, options.requestor, final_insert: options.final_insert,
+                                        options.pr_url, options.cc, options.requestor, final_insert: options.final_insert,
                                         config_path: options.config_path, recursion_method: options.recursion_method)
       end
     end

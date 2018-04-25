@@ -152,6 +152,7 @@ class MetaRequestsController < ApplicationController
       :ddl_statement       => params[:ddl_statement],
       :final_insert        => params[:final_insert],
       :pr_url              => params[:pr_url],
+      :cc                  => params[:cc],
       :max_threads_running => max_threads_running,
       :max_replication_lag => max_replication_lag,
       :config_path         => config_path,
@@ -166,6 +167,7 @@ class MetaRequestsController < ApplicationController
     ddl_statement = params[:ddl_statement]
     final_insert = params[:final_insert]
     pr_url = params[:pr_url]
+    cc = params[:cc]
     databases = params[:databases]
     clusters = params[:clusters]
     max_threads_running = params[:max_threads_running]
@@ -212,6 +214,7 @@ class MetaRequestsController < ApplicationController
           "database"            => database,
           "ddl_statement"       => ddl_statement,
           "pr_url"              => pr_url,
+          "cc"                  => cc,
           "requestor"           => current_user_name,
           "final_insert"        => final_insert,
           "max_threads_running" => max_threads_running,
@@ -232,6 +235,7 @@ class MetaRequestsController < ApplicationController
           :ddl_statement       => ddl_statement,
           :final_insert        => final_insert,
           :pr_url              => pr_url,
+          :cc                  => cc,
           :requestor           => current_user_name,
           :max_threads_running => max_threads_running,
           :max_replication_lag => max_replication_lag,
@@ -273,6 +277,7 @@ class MetaRequestsController < ApplicationController
       :ddl_statement       => ddl_statement,
       :final_insert        => final_insert,
       :pr_url              => pr_url,
+      :cc                  => cc,
       :max_threads_running => max_threads_running,
       :max_replication_lag => max_replication_lag,
       :config_path         => config_path,
@@ -299,6 +304,7 @@ class MetaRequestsController < ApplicationController
       :ddl_statement       => @meta_request.ddl_statement,
       :final_insert        => @meta_request.final_insert,
       :pr_url              => @meta_request.pr_url,
+      :cc                  => @meta_request.cc,
       :max_threads_running => max_threads_running,
       :max_replication_lag => max_replication_lag,
       :config_path         => @meta_request.config_path,
@@ -308,7 +314,7 @@ class MetaRequestsController < ApplicationController
 
   def update
     @errors = []
-    updatable = ["ddl_statement", "pr_url", "final_insert", "max_threads_running", "max_replication_lag",
+    updatable = ["ddl_statement", "pr_url", "cc", "final_insert", "max_threads_running", "max_replication_lag",
       "config_path", "recursion_method", "requestor"]
     updated = {}
     ActiveRecord::Base.transaction do
@@ -372,6 +378,7 @@ class MetaRequestsController < ApplicationController
       :ddl_statement       => updated["ddl_statement"],
       :final_insert        => updated["final_insert"],
       :pr_url              => updated["pr_url"],
+      :cc                  => updated["cc"],
       :max_threads_running => updated["max_threads_running"],
       :max_replication_lag => updated["max_replication_lag"],
       :config_path         => updated["config_path"],

@@ -5,6 +5,9 @@ class MigrationMailer < ActionMailer::Base
   def new_migration(migration)
     @migration = Migration.find(migration.dao.id)
     recipients = [@@mailer_config[:default_to] + @@mailer_config[:default_to_domain]]
+    for recipient in @migration.cc.split(",")
+      recipients << recipient + @@mailer_config[:default_to_domain]
+    end
     mail(to: recipients, subject: "New OSC request: OSC-#{@migration.id} [#{ENV['RAILS_ENV']}]")
   end
 
@@ -16,6 +19,9 @@ class MigrationMailer < ActionMailer::Base
       recipients = [@migration.requestor + @@mailer_config[:default_to_domain]]
       recipients << @migration.approved_by + @@mailer_config[:default_to_domain] if @migration.approved_by
       recipients << @@mailer_config[:default_to] + @@mailer_config[:default_to_domain]
+      for recipient in @migration.cc.split(",")
+        recipients << recipient + @@mailer_config[:default_to_domain]
+      end
     else
       recipients = [@@mailer_config[:default_to] + @@mailer_config[:default_to_domain]]
     end

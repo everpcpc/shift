@@ -120,6 +120,7 @@ $ shift-client get migration --id 25
     "ddl_statement": "alter table migrations add column mfinch int",
     "final_insert": "",
     "pr_url": "github.com/pr",
+    "cc": "sysadmin",
     "table_rows_start": 25,
     "table_rows_end": null,
     "table_size_start": 16384,

@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20160701171400) do
     t.text     "final_insert",   limit: 65535
     t.string   "requestor",      limit: 255,   null: false
     t.string   "pr_url",         limit: 255,   null: false
+    t.string   "cc",             limit: 255,   null: false
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.binary   "custom_options", limit: 65535
@@ -54,6 +55,7 @@ ActiveRecord::Schema.define(version: 20160701171400) do
     t.text     "ddl_statement",    limit: 65535,                 null: false
     t.text     "final_insert",     limit: 65535
     t.string   "pr_url",           limit: 255,                   null: false
+    t.string   "cc",               limit: 255,                   null: false
     t.integer  "table_rows_start", limit: 8
     t.integer  "table_rows_end",   limit: 8
     t.integer  "table_size_start", limit: 8

@@ -84,6 +84,14 @@
     </div>
 
     <div class="form-group">
+      <label for="cc" class="col-md-3 control-label">cc</label>
+      <div class="col-md-7">
+        <input id="cc" type="text" class="form-control" name="cc" value="<%= @saved_state[:cc] %>">
+        <span class="help-block">ldap id split with comma</span>
+      </div>
+    </div>
+
+    <div class="form-group">
       <label for="final_insert" class="col-md-3 control-label">final insert</label>
       <div class="col-md-7">
         <textarea id="final_insert" class="form-control" name="final_insert"><%= @saved_state[:final_insert] %></textarea>

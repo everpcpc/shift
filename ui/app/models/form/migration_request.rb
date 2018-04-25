@@ -84,6 +84,7 @@ module Form
       :table,
       :ddl_statement,
       :pr_url,
+      :cc,
       :max_threads_running,
       :max_replication_lag,
       :config_path,
